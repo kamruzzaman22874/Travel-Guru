@@ -4,7 +4,8 @@ import bgImg from '../../assets/Rectangle 1.png';
 
 const Details = () => {
 	const details = useLoaderData();
-	const { name, description,id } = details;
+	const { name, description, id } = details;
+	console.log(details);
 	return (
 		<div
 			className='hero min-h-screen bg-slate-500'
@@ -20,6 +21,7 @@ const Details = () => {
 						<label htmlFor=''>Origin</label>
 						<input
 							type='text'
+							value={'DHAKA'}
 							placeholder='Type here'
 							className='input input-bordered w-full bg-slate-100'
 						/>
@@ -28,6 +30,7 @@ const Details = () => {
 						<label htmlFor=''>Destinations</label>
 						<input
 							type='text'
+							value={name}
 							placeholder='Type here'
 							className='input input-bordered w-full bg-slate-100'
 						/>
@@ -54,7 +57,7 @@ const Details = () => {
 						</p>
 					</div>
 					<div className='mt-8'>
-						<Link to={`/booking/${id}`}>
+						<Link>
 							<button className='btn btn-warning w-full'>Start Booking</button>
 						</Link>
 					</div>

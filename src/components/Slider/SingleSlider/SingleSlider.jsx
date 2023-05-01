@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 const SingleSlider = ({ travel }) => {
 	const { imageUrl, name, id } = travel;
+	// console.log(travel);
 	return (
-		<div className='ml-3'>
+		<div className='relative'>
 			<Link to={`/places/${id}`}>
 				<img src={imageUrl} alt='' />
 			</Link>

@@ -1,8 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
+import { useContext } from 'react';
+import { AuthContext } from '../providers/AuthProvider';
+import { updateProfile } from 'firebase/auth';
 
 const Register = () => {
+	const { createUser , user } = useContext(AuthContext);
+	const handleRegister = (event) => {
+		event.preventDefault();
+		const form = event.target;
+		const firstName = form.firstName.value;
+		const lastName = form.lastName.value;
+		const email = form.email.value;
+		const password = form.password.value;
+		const confirmPassword = form.confirmPassword.value;
+		if (password !== confirmPassword) {
+			alert('please enter the valid password');
+		}
+		// console.log(firstName, lastName, email, password, confirmPassword);
+		createUser(email, password)
+			.then((result) => {
+				const registerUser = result.user;
+				console.log(registerUser);
+				updateProfileData(result.user  , firstName)
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const updateProfileData = (user, firstName, lastName) => {
+		updateProfile(user, {
+			displayName: firstName
+		})
+			.then(() => {
+				console.log('user updated');
+			})
+			.catch(err => console.log(err))
+	}
 	return (
 		<>
 			<div className='hero h-full bg-slate-500'>
@@ -11,14 +45,15 @@ const Register = () => {
 						<h1 className='text-2xl font-bold'>Login now!</h1>
 					</div>
 					<div className='card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100'>
-						<div className='card-body'>
+						<form onSubmit={handleRegister} className='card-body'>
 							<div className='form-control'>
 								<label className='label'>
 									<span className='label-text'>First Name</span>
 								</label>
 								<input
 									type='text'
-									placeholder='Last Name'
+									name='firstName'
+									placeholder='First Name'
 									className='input input-bordered'
 								/>
 							</div>
@@ -28,7 +63,8 @@ const Register = () => {
 								</label>
 								<input
 									type='text'
-									placeholder='email'
+									name='lastName'
+									placeholder='Last Name'
 									className='input input-bordered'
 								/>
 							</div>
@@ -38,7 +74,8 @@ const Register = () => {
 								</label>
 								<input
 									type='text'
-									placeholder='First Name'
+									name='email'
+									placeholder='email'
 									className='input input-bordered'
 								/>
 							</div>
@@ -47,7 +84,8 @@ const Register = () => {
 									<span className='label-text'>Password</span>
 								</label>
 								<input
-									type='text'
+									type='password'
+									name='password'
 									placeholder='password'
 									className='input input-bordered'
 								/>
@@ -57,7 +95,8 @@ const Register = () => {
 									<span className='label-text'>Confirm Password</span>
 								</label>
 								<input
-									type='text'
+									type='password'
+									name='confirmPassword'
 									placeholder='Confirm Password'
 									className='input input-bordered'
 								/>
@@ -80,9 +119,9 @@ const Register = () => {
 							</div>
 							<div>
 								<p className='text-sm text-center'>
-									Don’t have an account?
-									<Link to='/register' className='text-warning font-semibold'>
-										Create an account
+									already have an account?
+									<Link to='/login' className='text-warning font-semibold'>
+										Login
 									</Link>
 								</p>
 							</div>
@@ -100,7 +139,7 @@ const Register = () => {
 									Continue with Google
 								</button>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
